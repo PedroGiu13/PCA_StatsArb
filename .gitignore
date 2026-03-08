@@ -1,0 +1,24 @@
+# Byte-compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Data (custom: too large/sensitive for git)
+data/
+
+# Notebooks
+.ipynb_checkpoints/
+notebooks/.ipynb_checkpoints/
+
+# Logs, IDE, etc.
+*.log
+.vscode/
+.idea/
+.pickle
+*.pkl

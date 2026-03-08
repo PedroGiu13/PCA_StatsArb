@@ -1,7 +1,18 @@
 from src.config import START_DATE, END_DATE, SEMICONDUCTOR_TICKER
 from src.data_ingestion import fetch_data
+from src.utils import transform_log_returns
 
-# lu_tickers = ["HLT", "IHG", "MAR", "WH", "CHH"]
 
-df = fetch_data(SEMICONDUCTOR_TICKER, START_DATE, END_DATE)
-print(df.tail())
+def run_pipeline():
+    # ===== Stage 1: Data preprocessing =====
+    # Fetch asset prices
+    df_prices = fetch_data(SEMICONDUCTOR_TICKER, START_DATE, END_DATE)
+
+    # Transform prices -> log returns
+    df_returns = transform_log_returns(df_prices)
+
+    # Data Inspection
+
+
+if __name__ == "__main__":
+    run_pipeline()

@@ -12,13 +12,13 @@ def fetch_data(tickers: list[str], start_date: str, end_date: str, cache_dir: st
         tickers (list[str]): list of tickers
         start_date (str): start date
         end_date (str): end date
-        cache_dir (str, optional): directory to save the file
+        cache_dir (str, optional): directory to save the file Defaults to "data/raw".
 
     Returns:
         pd.DataFrame: dataframe with Adjusted Closing Price of every ticker
     """
 
-    # Define parent folder to save the data
+    # Define parent directory to save the data
     file_dir = Path(cache_dir)
     file_dir.mkdir(parents=True, exist_ok=True)
 
@@ -27,11 +27,11 @@ def fetch_data(tickers: list[str], start_date: str, end_date: str, cache_dir: st
 
     # Check file existance
     if file_path.exists():
-        print("Data already in memory")
+        print("\nData already in memory")
         return pd.read_parquet(file_path)
 
     else:
-        print(f"Fetching data for: {tickers}")
+        print(f"\nFetching data for: {tickers}")
         try:
             prices = yf.download(
                 tickers=tickers,

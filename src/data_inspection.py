@@ -1,16 +1,18 @@
 import pandas as pd
+import seaborns as sns
+import matplotlib.pyplot as plt
 
 
-def structure_diagnostics(df: pd.DataFrame) -> dict:
+def structure_diagnostics(df: pd.DataFrame) -> pd.DataFrame:
     """Compute structural diagnostics
 
     This function takes a dataframe and computes different structural metrics to create a diagnosis of the data. The goal is to analyze if the data is ready for the following analysis
 
     Args:
-        df (pd.DataFrame): dataframe with ticker information
+        df (pd.DataFrame): dataframe with ticker information indexed by time
 
     Returns:
-        dict: dictionary with metrics
+        pd.DataFrame: dataframe with structural metrics
     """
     # Shape basics
     n_rows, n_cols = df.shape
@@ -39,7 +41,7 @@ def structure_diagnostics(df: pd.DataFrame) -> dict:
         else "Quality Check - Failed"
     )
 
-    # Build Dictionary with metrics
+    # Build dataframe with metrics
     structure_metrics = {
         "n_rows": n_rows,
         "n_columns": n_cols,
@@ -57,14 +59,53 @@ def structure_diagnostics(df: pd.DataFrame) -> dict:
         "status": status,
     }
 
-    return structure_metrics
+    return pd.DataFrame(structure_metrics)
 
 
 def ticker_diagnostics(df: pd.DataFrame) -> pd.DataFrame:
-    pass
+    """Per-ticker diagnostics
+
+    Functions that computes the coverage and numerical summary of every ticker
+
+    Args:
+        df (pd.DataFrame): dataframe with ticker information indexed by time
+
+    Returns:
+        pd.DataFrame: dataframe with six metrics per ticker
+    """
+    total_days = len(df.index)
+    valid_days_series = total_days - df.isna().sum()
+    pct_missing_values = 1 - (valid_days_series / total_days)
+
+    ticker_metrics = pd.DataFrame(
+        {
+            "Valid Days": valid_days_series,
+            "Missing %": pct_missing_values,
+            "Mean Return": df.mean(),
+            "Std Return": df.std(),
+            "Min Return": df.min(),
+            "Max Return": df.max(),
+        }
+    )
+
+    return ticker_metrics
 
 
-def visual_diagnostics():
+def correlation_diagnostics(df: pd.DataFrame) -> dict:
+    df_corr = df.corr()
+
+    corr_metrics = {
+        "Corr Df": df_corr,
+        "Avg Corr": df_corr.mean(),
+        "Std Corr": df_corr.std(),
+        "Min Cor": df_corr.min(),
+        "Max Corr": df_corr.max(),
+    }
+
+    return corr_metrics
+
+
+def extreme_returns_diagnostics(df: pd.DataFrame):
     pass
 
 
